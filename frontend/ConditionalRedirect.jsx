@@ -25,16 +25,6 @@ import { push } from 'react-router-redux';
 class ConditionalRedirect extends React.Component {
 
   /**
-   * Properties types.
-   */
-  props: {
-    from: string,
-    to?: string | Object,
-    exact?: boolean,
-    redirect?: Function
-  };
-
-  /**
    * @inheritDoc
    */
   componentWillReceiveProps(props) {
@@ -67,7 +57,7 @@ class ConditionalRedirect extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch: Function) => ({
+const mapDispatchToProps = (dispatch) => ({
   redirect(to) {
     dispatch(push(to));
   }

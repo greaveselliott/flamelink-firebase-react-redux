@@ -43,17 +43,7 @@ const styles = {
  * The Dropdown Menu.
  */
 class DropdownMenu extends React.Component {
-
-  /**
-   * Properties types.
-   */
-  props: {
-    firebase: {
-      logout: Function
-    },
-    classes: Object
-  };
-
+  
   state = {
     anchorEl: null,
     open: false,

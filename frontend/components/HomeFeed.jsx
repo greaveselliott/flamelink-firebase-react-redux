@@ -33,13 +33,6 @@ class HomeFeed extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  /**
-   * Properties types.
-   */
-  props: {
-  };
-
   /**
    * @inheritDoc
    */
@@ -56,7 +49,7 @@ const mapStateToProps = state => {
   return state;
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeFeed);

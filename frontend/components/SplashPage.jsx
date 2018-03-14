@@ -57,17 +57,7 @@ class SplashPage extends React.Component {
       }
     };
   }
-
-  /**
-   * Properties types.
-   */
-  props: {
-    redirectHome: Function,
-    firebase: {
-      auth: Function
-    }
-  };
-
+  
   /**
    * @inheritDoc
    */

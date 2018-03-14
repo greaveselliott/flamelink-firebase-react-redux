@@ -80,15 +80,6 @@ export class App extends React.Component {
   }
 
   /**
-   * Properties types.
-   */
-  props: {
-    store: Object,
-    history: Object,
-    registry: Object
-  };
-
-  /**
    * @inheritDoc
    */
   componentDidMount() {

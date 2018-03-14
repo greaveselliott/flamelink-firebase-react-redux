@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @flow
 
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import FriendlyPixLayout from './components/Layout';
 import { connect } from 'react-redux';
+
+// Routes
+import FriendlyPixLayout from './components/Layout';
 import ConditionalRedirect from './ConditionalRedirect';
 import SplashPage from './components/SplashPage';
 import HomeFeed from './components/HomeFeed';
@@ -34,20 +35,7 @@ import FourOhFour from './components/FourOhFour';
  */
 class Routes extends React.Component {
 
-  /**
-   * Properties types.
-   */
-  props: {
-    firebaseState: {
-      auth: {
-        isEmpty: boolean
-      }
-    }
-  };
 
-  /**
-   * @inheritDoc
-   */
   render() {
     const isAuth = !this.props.firebaseState.auth.isEmpty;
 

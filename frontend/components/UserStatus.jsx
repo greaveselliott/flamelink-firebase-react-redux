@@ -57,19 +57,6 @@ const styles = theme => ({
 class UserStatus extends React.Component {
 
   /**
-   * Properties types.
-   */
-  props: {
-    auth: {
-      isEmpty: boolean,
-      uid: String,
-      displayName: String,
-      photoURL: String
-    },
-    classes: Object
-  };
-
-  /**
    * @inheritDoc
    */
   render() {

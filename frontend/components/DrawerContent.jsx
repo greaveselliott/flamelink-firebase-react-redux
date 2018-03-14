@@ -64,17 +64,6 @@ const styles = {
 class DrawerContent extends React.Component {
 
   /**
-   * Properties types.
-   */
-  props: {
-    firebase: {
-      logout: Function
-    },
-    isSignedIn: boolean,
-    classes: Object
-  };
-
-  /**
    * Logs out the user from Firebase.
    */
   logout() {

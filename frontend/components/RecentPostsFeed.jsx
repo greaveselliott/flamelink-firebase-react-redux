@@ -36,12 +36,6 @@ class RecentPostsFeed extends React.Component {
   }
 
   /**
-   * Properties types.
-   */
-  props: {
-  };
-
-  /**
    * @inheritDoc
    */
   render() {

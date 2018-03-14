@@ -57,14 +57,7 @@ const styles = theme => ({
  * The Search Bar.
  */
 class SearchBar extends React.Component {
-
-  /**
-   * Properties types.
-   */
-  props: {
-    classes: Object
-  };
-
+  
   /**
    * @inheritDoc
    */

@@ -32,13 +32,7 @@ class SinglePost extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  /**
-   * Properties types.
-   */
-  props: {
-  };
-
+  
   /**
    * @inheritDoc
    */

@@ -58,14 +58,6 @@ class LinkTab extends React.Component {
   static muiName = 'Tab';
 
   /**
-   * Properties types.
-   */
-  props: {
-    value: String,
-    classes?: Object
-  };
-
-  /**
    * @inheritDoc
    */
   render() {
@@ -88,17 +80,6 @@ LinkTab = withStyles(styles)(LinkTab);
  * A Navigation Bar implemented as a ReactRouter-aware material-ui Tabs.
  */
 class NavigationBar extends React.Component {
-
-  /**
-   * Properties types.
-   */
-  props: {
-    pathname: String,
-    isSignedIn: boolean,
-    classes?: {
-      root: Object
-    }
-  };
 
   /**
    * @inheritDoc

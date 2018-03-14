@@ -113,18 +113,6 @@ const styles = theme => ({
  */
 class FriendlyPixLayout extends React.Component {
 
-  /**
-   * Properties types.
-   */
-  props: {
-    children: any,
-    firebaseCustomAuthToken: string | void,
-    firebase: {
-      logout: Function
-    },
-    classes: Object
-  };
-
   state = {
     drawerOpen: false
   };
