@@ -12,7 +12,8 @@
     "lint": "eslint **/*.{js,jsx} --quiet",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:update": "jest -u"
+    "test:update": "jest -u",
+    "deploy": "yarn build; firebase deploy; yarn cleanup"
   },
   "dependencies": {
     "@google-cloud/storage": "^1.2.1",
@@ -26,7 +27,7 @@
     "express": "4.15.3",
     "firebase": "^4.1.5",
     "firebase-admin": "~5.2.1",
-    "firebase-functions": "^0.6.2",
+    "firebase-functions": "^0.8.2",
     "firebaseui": "^2.3.0",
     "flamelink": "^0.14.1",
     "history": "^4.6.3",
