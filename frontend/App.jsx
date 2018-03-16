@@ -118,6 +118,12 @@ export class App extends React.Component {
  */
 export function makeStore(history, firebaseApp, initialState = {}) {
   const historyMiddleware = routerMiddleware(history);
+  const composeEnhancers = typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
+
   return createStore(
     combineReducers({
       ...reducers,
@@ -125,7 +131,8 @@ export function makeStore(history, firebaseApp, initialState = {}) {
       firebaseState: firebaseStateReducer
     }),
     initialState,
-    compose(
+    composeEnhancers(
+      applyMiddleware(),
       applyMiddleware(thunk.withExtraArgument(getFirebase)),
       applyMiddleware(historyMiddleware),
       reactReduxFirebase(firebaseApp, {enableRedirectHandling: false})
