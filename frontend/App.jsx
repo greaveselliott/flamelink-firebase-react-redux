@@ -39,17 +39,11 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import preset from 'jss-preset-default';
 
-// Theme.
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
-import { lightBlue, amber } from 'material-ui/colors';
-
 // Other.
 import { canUseDOM } from 'exenv';
 
 // Local.
 import { whenAuthReady, keepIdTokenInCookie } from './firebaseTools';
-import * as reducers from './reducers';
 import Routes from './Routes';
 
 /**
@@ -59,29 +53,17 @@ import Routes from './Routes';
  */
 export class App extends React.Component {
 
-  /**
-   * @inheritDoc
-   */
   constructor(props) {
     super(props);
 
     // Create a theme instance.
-    this.theme = createMuiTheme({
-      palette: {
-        primary: lightBlue,
-        secondary: amber,
-        type: 'light',
-      },
-    });
+    this.theme =  {};
 
     // Configure JSS
     this.jss = create(preset());
-    this.jss.options.createGenerateClassName = createGenerateClassName;
+    //this.jss.options.createGenerateClassName = createGenerateClassName;
   }
 
-  /**
-   * @inheritDoc
-   */
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.getElementById('jss-server-side');
@@ -96,13 +78,11 @@ export class App extends React.Component {
   render() {
     return (
       <JssProvider registry={this.props.registry} jss={this.jss}>
-        <MuiThemeProvider theme={this.theme} sheetsManager={new Map()}>
           <Provider store={this.props.store}>
             <ConnectedRouter history={this.props.history}>
               <Routes/>
             </ConnectedRouter>
           </Provider>
-        </MuiThemeProvider>
       </JssProvider>
     );
   }
@@ -126,13 +106,12 @@ export function makeStore(history, firebaseApp, initialState = {}) {
 
   return createStore(
     combineReducers({
-      ...reducers,
+      //...reducers,
       router: routerReducer,
       firebaseState: firebaseStateReducer
     }),
     initialState,
     composeEnhancers(
-      applyMiddleware(),
       applyMiddleware(thunk.withExtraArgument(getFirebase)),
       applyMiddleware(historyMiddleware),
       reactReduxFirebase(firebaseApp, {enableRedirectHandling: false})

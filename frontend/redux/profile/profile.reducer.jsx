@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @flow
 
-export const SET_PROFILE_SEARCH_TERM = 'SET_PROFILE_SEARCH_TERM';
+import { SET_PROFILE_SEARCH_TERM } from '../actions/actions';
 
+const profileSearchTerm = (state = '', action) => {
+  if (action.type === SET_PROFILE_SEARCH_TERM) {
+    return action.payload;
+  }
+  return state;
+};
 
-/**
- * Sets the profile search term.
- *
- * @param {string} searchTerm - The new search term to set.
- * @return {{type, payload: string}}
- */
-export function setProfileSearchTerm(searchTerm) {
-  return { type: SET_PROFILE_SEARCH_TERM, payload: searchTerm };
-}
+export default profileSearchTerm;

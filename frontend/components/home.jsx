@@ -15,11 +15,28 @@
  */
 // @flow
 
-import { SET_PROFILE_SEARCH_TERM } from './actions';
+import React from 'react';
+import { connect } from 'react-redux';
 
-export const profileSearchTerm = (state = '', action: Action) => {
-  if (action.type === SET_PROFILE_SEARCH_TERM) {
-    return action.payload;
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
   }
+
+  render() {
+    return (
+      <div>
+        <h1>HOME FEED</h1>
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = state => {
   return state;
 };
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

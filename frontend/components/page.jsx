@@ -13,43 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @flow
 
 import React from 'react';
 import { connect } from 'react-redux';
 import 'firebase/auth';
 
-/**
- * Entry point to the Home Feed.
- */
-class HomeFeed extends React.Component {
+class Page extends React.Component {
 
-  /**
-   * Constructor for the Home Feed.
-   *
-   * @param {Object} props - Additional object properties.
-   * @constructor
-   */
   constructor(props) {
     super(props);
   }
-  /**
-   * @inheritDoc
-   */
+
   render() {
     return (
       <div>
-        <h1>HOME FEED</h1>
+        <h1>Page</h1>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return state;
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeFeed);
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

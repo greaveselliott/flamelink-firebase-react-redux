@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @flow
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -21,25 +20,16 @@ import { connect } from 'react-redux';
 /**
  * Entry point to the FriendlyPix app.
  */
-class UserProfile extends React.Component {
+class SinglePost extends React.Component {
 
-  /**
-   * Constructor for the FriendlyPix app.
-   *
-   * @param {Object} props - Additional object properties.
-   * @constructor
-   */
   constructor(props) {
     super(props);
   }
-
-  /**
-   * @inheritDoc
-   */
+  
   render() {
     return (
       <div>
-        <h1>USER PROFILE</h1>
+        <h1>SINGLE POST</h1>
       </div>
     )
   }
@@ -50,7 +40,7 @@ const mapStateToProps = (state, ownProps) => {
   return state;
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePost);
