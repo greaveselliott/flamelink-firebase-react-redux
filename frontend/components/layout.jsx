@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
-  padding:0;
-  margin:0;
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { compose } from 'redux';
+import { firebaseConnect } from 'react-redux-firebase';
+
+const styles = theme => ({});
+
+class Layout extends React.Component {
+
+  render() {
+    return (
+      <div>
+          {this.props.children}
+      </div>
+    )
+  }
 }
+
+export default compose(firebaseConnect(), connect(state => state))(Layout);
