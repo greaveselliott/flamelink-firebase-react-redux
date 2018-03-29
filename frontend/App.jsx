@@ -22,6 +22,7 @@ import ReactDOM from 'react-dom';
 // Firebase.
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import flamelink from 'flamelink';
 
 // Redux.
 import { Provider } from 'react-redux';
@@ -136,12 +137,18 @@ if (canUseDOM) {
   // Instantiate a Firebase app.
   const firebaseApp = firebase.initializeApp(firebaseConfig);
 
+  const app = flamelink({ firebaseApp });
+
+  app.nav.get()
+  .then(menu => console.log('Main menu:', menu))
+  .catch(error => console.error('Something went wrong while retrieving the menu. Details:', error));
+
   // Keep the Firebase ID Token and the __session cookie in sync.
   keepIdTokenInCookie(firebaseApp, '__session');
 
   const registry = makeRegistry();
   const history = createBrowserHistory();
-  const store = makeStore(history, firebaseApp, window.__REDUX_STATE__);
+  const store = makeStore(history, app, window.__REDUX_STATE__);
 
   // When Firebase Auth is ready we'll display the app.
   whenAuthReady(store).then(() => {

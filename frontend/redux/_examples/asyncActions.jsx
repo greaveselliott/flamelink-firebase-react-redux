@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @flow
 
 import axios from 'axios';
 import { addAPIData } from './actionCreators';
@@ -24,8 +23,8 @@ import { addAPIData } from './actionCreators';
  * @param {string} imdbID - The IMDB ID of the movie.
  * @return {function(Function)}
  */
-export default function getAPIDetails(imdbID: string) {
-  return (dispatch: Function) => {
+export default function getAPIDetails(imdbID) {
+  return (dispatch) => {
     axios
       .get(`http://localhost:3000/${imdbID}`)
       .then(response => {

@@ -17,6 +17,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { connect } from 'react-redux';
+//import app from './flamelinkApp';
 
 // Routes
 import Layout from './components/layout';
@@ -30,8 +31,6 @@ import NotFound from './components/404';
  * All the routes.
  */
 class Routes extends React.Component {
-
-
   render() {
     return (
       <Layout>
