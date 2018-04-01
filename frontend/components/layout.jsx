@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
+import Navigation from './navigation';
 
 const styles = theme => ({});
 
@@ -27,6 +28,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
+          <Navigation />
           {this.props.children}
       </div>
     )

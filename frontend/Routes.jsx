@@ -17,7 +17,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { connect } from 'react-redux';
-//import app from './flamelinkApp';
+import { firebaseConnect, isLoaded, isEmpty, getVal } from 'react-redux-firebase';
+import { compose } from 'redux';
+import * as _ from 'lodash';
 
 // Routes
 import Layout from './components/layout';
@@ -26,6 +28,22 @@ import Home from './components/home';
 import Post from './components/post';
 import Page from './components/page';
 import NotFound from './components/404';
+
+
+const renderMergedProps = (component, ...rest) => {
+  const finalProps = Object.assign({}, ...rest);
+  return (
+    React.createElement(component, finalProps)
+  );
+}
+
+const PropsRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return renderMergedProps(component, routeProps, rest);
+    }}/>
+  );
+}
 
 /**
  * All the routes.
@@ -36,12 +54,13 @@ class Routes extends React.Component {
       <Layout>
         <Switch> 
           <Route exact path="/" component={Home}/> 
-          <Route> 
-              <Switch> 
-                <Route path="/:post" component={Post}/> 
-                <Route path="/:page" component={Page}/> 
-                <Route component={NotFound}/> 
-              </Switch> 
+          <Route>
+          <Switch>
+            {
+              this.props.posts && _.map(this.props.posts, post => <PropsRoute key={post.id} path={_.get(post, 'seo.canonicalUrl', '/')} component={Post} id={post.id}/>)
+            }
+            <Route component={NotFound}/> 
+            </Switch> 
           </Route> 
         </Switch>
       </Layout>
@@ -49,4 +68,11 @@ class Routes extends React.Component {
   }
 }
 
-export default connect(state => state)(Routes);
+export default compose(
+  firebaseConnect([
+    'flamelink/environments/production/content/blog/en-US'
+  ]),
+  connect(state => ({
+    posts: _.get(state, 'firebaseState.data.flamelink.environments.production.content.blog.en-US', undefined),
+  })),
+)(Routes);

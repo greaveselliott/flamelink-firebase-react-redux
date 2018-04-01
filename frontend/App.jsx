@@ -148,7 +148,7 @@ if (canUseDOM) {
 
   const registry = makeRegistry();
   const history = createBrowserHistory();
-  const store = makeStore(history, app, window.__REDUX_STATE__);
+  const store = makeStore(history, firebaseApp, window.__REDUX_STATE__);
 
   // When Firebase Auth is ready we'll display the app.
   whenAuthReady(store).then(() => {
