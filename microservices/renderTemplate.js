@@ -60,9 +60,21 @@ router.get('*', (req, res) => {
     // Set the new URL.
     history.replace(req.url);
     const store = app.makeStore(history, firebaseApp);
-    const registry = app.makeRegistry();
-    // Wait for auth to be ready.
-    firebaseTools.whenAuthReady(store).then(() => {
+
+    console.log(firebaseApp.app)
+      
+    store.firebase.connect({ type: 'once', path: '/flamelink/environments/production/content/blog/es-US/' });
+    
+    // const poll = setInterval(() => {
+        console.log('Firebase preload: ', store.getState().firebaseState.requested.once);
+    // }, 2250);
+    
+
+
+      const registry = app.makeRegistry();
+        
+      // Wait for auth to be ready.
+      firebaseTools.whenAuthReady(store).then(() => {
       // Render the App.
       const body = ReactDOMServer.renderToString(
         React.createElement(app.App, {registry: registry, store: store, history: history})
@@ -85,7 +97,7 @@ router.get('*', (req, res) => {
         // If there was no redirect we send the rendered app as well as the redux state.
         res.send(template({body, initialState, css, node_env: process.env.NODE_ENV}));
       }
-    });
+  });
   }).catch(error => {
     console.log('There was an error', error);
     res.status(500).send(error);

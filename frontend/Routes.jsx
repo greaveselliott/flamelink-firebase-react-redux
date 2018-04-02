@@ -15,12 +15,11 @@
  */
 
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { firebaseConnect, isLoaded, isEmpty, getVal } from 'react-redux-firebase';
 import { compose } from 'redux';
 import * as _ from 'lodash';
-
 // Routes
 import Layout from './components/layout';
 import ConditionalRedirect from './ConditionalRedirect';
@@ -59,7 +58,7 @@ class Routes extends React.Component {
             {
               this.props.posts && _.map(this.props.posts, post => <PropsRoute key={post.id} path={_.get(post, 'seo.canonicalUrl', '/')} component={Post} id={post.id}/>)
             }
-            <Route component={NotFound}/> 
+            <Route exact component={NotFound}/> 
             </Switch> 
           </Route> 
         </Switch>
@@ -68,11 +67,11 @@ class Routes extends React.Component {
   }
 }
 
-export default compose(
+export default withRouter(compose(
   firebaseConnect([
     'flamelink/environments/production/content/blog/en-US'
   ]),
   connect(state => ({
     posts: _.get(state, 'firebaseState.data.flamelink.environments.production.content.blog.en-US', undefined),
-  })),
-)(Routes);
+  }))
+)(Routes));

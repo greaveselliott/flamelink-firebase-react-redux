@@ -137,11 +137,7 @@ if (canUseDOM) {
   // Instantiate a Firebase app.
   const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-  const app = flamelink({ firebaseApp });
-
-  app.nav.get()
-  .then(menu => console.log('Main menu:', menu))
-  .catch(error => console.error('Something went wrong while retrieving the menu. Details:', error));
+  //const app = flamelink({ firebaseApp });
 
   // Keep the Firebase ID Token and the __session cookie in sync.
   keepIdTokenInCookie(firebaseApp, '__session');
@@ -150,9 +146,8 @@ if (canUseDOM) {
   const history = createBrowserHistory();
   const store = makeStore(history, firebaseApp, window.__REDUX_STATE__);
 
-  // When Firebase Auth is ready we'll display the app.
   whenAuthReady(store).then(() => {
     // Render the app.
-    ReactDOM.render(<App registry={registry} store={store} history={history}/>, document.getElementById('app'));
+      ReactDOM.render(<App registry={registry} store={store} history={history}/>, document.getElementById('app'));
   });
 }
