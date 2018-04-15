@@ -32,6 +32,7 @@ const router = new express.Router();
 const firebaseMiddleware = require('./firebase-express-middleware');
 const createMemoryHistory = require('history').createMemoryHistory;
 const firebase = require('firebase');
+const watch = require('redux-watch');
 // Get the Firebase config from the auto generated file.
 const firebaseConfig = require('../frontend/firebase-config.json').result;
 // Create a Firebase Admin app
@@ -54,50 +55,32 @@ router.use(firebaseMiddleware.auth({
 router.get('*', (req, res) => {
   const user = req.user || {};
   createFirebaseAppWithSignedInUser(user.uid, user.token).then(firebaseApp => {
-    // We make sure that the firebase auth state listeners are triggered again.
-    // Create the redux store.
-    const history = createMemoryHistory();
-    // Set the new URL.
-    history.replace(req.url);
-    const store = app.makeStore(history, firebaseApp);
-
-    console.log(firebaseApp.app)
-      
-    store.firebase.connect({ type: 'once', path: '/flamelink/environments/production/content/blog/es-US/' });
-    
-    // const poll = setInterval(() => {
-        console.log('Firebase preload: ', store.getState().firebaseState.requested.once);
-    // }, 2250);
-    
-
-
+      // We make sure that the firebase auth state listeners are triggered again.
+      // Create the redux store.
+      const history = createMemoryHistory();
+      // Set the new URL.
+      history.replace(req.url);
+      const store = app.makeStore(history, firebaseApp);
       const registry = app.makeRegistry();
         
       // Wait for auth to be ready.
       firebaseTools.whenAuthReady(store).then(() => {
-      // Render the App.
-      const body = ReactDOMServer.renderToString(
-        React.createElement(app.App, {registry: registry, store: store, history: history})
-      );
+        const App = React.createElement(app.App, {registry, store, history});
+        const body = ReactDOMServer.renderToString(App);
+        const initialState = store.getState();
+        const css = registry.toString();
+        const lastUrl = initialState.router.location.pathname;
 
-      // Get the state of the redux store.
-      const initialState = store.getState();
-
-      // Grab the CSS from our sheetsRegistry.
-      const css = registry.toString();
-
-      // Check if there has been a redirect.
-      const lastUrl = initialState.router.location.pathname;
-      if (lastUrl !== req.url) {
-        // If there has been a redirect we redirect server side.
-        console.log('Server side redirect to', lastUrl);
-        res.redirect(lastUrl);
-      } else {
-        // res.set('Cache-Control', 'public, max-age=60, s-maxage=180'); // TODO: make this change dependent on each URL. with a map maybe??
-        // If there was no redirect we send the rendered app as well as the redux state.
-        res.send(template({body, initialState, css, node_env: process.env.NODE_ENV}));
-      }
-  });
+        if (lastUrl !== req.url) {
+          // If there has been a redirect we redirect server side.
+          console.log('Server side redirect to', lastUrl);
+          res.redirect(lastUrl);
+        } else {
+          // res.set('Cache-Control', 'public, max-age=60, s-maxage=180'); // TODO: make this change dependent on each URL. with a map maybe??
+          // If there was no redirect we send the rendered app as well as the redux state.
+          res.send(template({body, initialState, css, node_env: process.env.NODE_ENV}));
+        }
+    }, 200);
   }).catch(error => {
     console.log('There was an error', error);
     res.status(500).send(error);

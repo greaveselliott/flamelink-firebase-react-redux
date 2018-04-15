@@ -137,15 +137,13 @@ if (canUseDOM) {
   // Instantiate a Firebase app.
   const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-  //const app = flamelink({ firebaseApp });
-
   // Keep the Firebase ID Token and the __session cookie in sync.
   keepIdTokenInCookie(firebaseApp, '__session');
 
   const registry = makeRegistry();
   const history = createBrowserHistory();
   const store = makeStore(history, firebaseApp, window.__REDUX_STATE__);
-
+  
   whenAuthReady(store).then(() => {
     // Render the app.
       ReactDOM.render(<App registry={registry} store={store} history={history}/>, document.getElementById('app'));

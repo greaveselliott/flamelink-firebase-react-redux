@@ -18,9 +18,9 @@ const Navigation = ({ posts }) => (
 
 export default compose(
   firebaseConnect([
-    'flamelink/environments/production/content/blog/en-US'
+    'firebaseState/data/flamelink/environments/production/content/blog/en-US'
   ]),
   connect(state => ({
-    posts: _.get(state, 'firebaseState.data.flamelink.environments.production.content.blog.en-US', undefined),
+    posts: _.get(state, 'firebaseState.data.flamelink.environments.production.content.blog.en-US', []),
   })),
 )(Navigation);
