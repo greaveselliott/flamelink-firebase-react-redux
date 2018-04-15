@@ -1,42 +1,25 @@
-/**
- * Copyright 2017 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-'use strict';
+import { XMLHttpRequest } from 'xmlhttprequest';
+import { https } from 'firebase-functions';
+import path from 'path';
+import fs from 'fs';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import * as _ from 'lodash';
+import App, { makeRegistry } from '../frontend/app';
+import makeStore from '../frontend/make-store';
+import firebaseTools, { whenAuthReady } from '../frontend/firebaseTools';
+import express from 'express';
+import firebaseMiddleware from './firebase-express-middleware';
+import firebase from 'firebase';
+import admin from 'firebase-admin';
+import history, { createMemoryHistory } from 'history';
 
 // needed to fix "Error: The XMLHttpRequest compatibility library was not found." in Firebase client SDK.
-global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-const functions = require('firebase-functions');
-const path = require('path');
-const fs = require('fs');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const _ = require('lodash');
+global.XMLHttpRequest = XMLHttpRequest;
+const firebaseConfig = require('../frontend/firebase-config.json').result;
 const baseTemplate = fs.readFileSync(path.resolve(__dirname, './index.html'));
 const template = _.template(baseTemplate);
-const app = require('../frontend/App');
-const firebaseTools = require('../frontend/firebaseTools');
-const express = require('express');
 const router = new express.Router();
-const firebaseMiddleware = require('./firebase-express-middleware');
-const createMemoryHistory = require('history').createMemoryHistory;
-const firebase = require('firebase');
-const watch = require('redux-watch');
-// Get the Firebase config from the auto generated file.
-const firebaseConfig = require('../frontend/firebase-config.json').result;
-// Create a Firebase Admin app
-const admin = require('firebase-admin');
 const serviceAccount = require('./service-account-credentials.json');
 const firebaseAdminApp = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -60,13 +43,13 @@ router.get('*', (req, res) => {
       const history = createMemoryHistory();
       // Set the new URL.
       history.replace(req.url);
-      const store = app.makeStore(history, firebaseApp);
-      const registry = app.makeRegistry();
+      const store = makeStore(history, firebaseApp);
+      const registry = makeRegistry();
         
       // Wait for auth to be ready.
-      firebaseTools.whenAuthReady(store).then(() => {
-        const App = React.createElement(app.App, {registry, store, history});
-        const body = ReactDOMServer.renderToString(App);
+      whenAuthReady(store).then(() => {
+        const root = React.createElement(App, {registry, store, history});
+        const body = ReactDOMServer.renderToString(root);
         const initialState = store.getState();
         const css = registry.toString();
         const lastUrl = initialState.router.location.pathname;
@@ -80,7 +63,10 @@ router.get('*', (req, res) => {
           // If there was no redirect we send the rendered app as well as the redux state.
           res.send(template({body, initialState, css, node_env: process.env.NODE_ENV}));
         }
-    }, 200);
+    }, 200).catch(error => {
+      console.log('There was an error', error);
+      res.status(500).send(error);
+    });
   }).catch(error => {
     console.log('There was an error', error);
     res.status(500).send(error);
@@ -91,7 +77,7 @@ router.get('*', (req, res) => {
  * Helper function to get the markup from React, inject the initial state, and
  * send the server-side markup to the client
  */
-exports = module.exports = functions.https.onRequest(router);
+exports = module.exports = https.onRequest(router);
 
 /**
  * Returns a Firebase App instance
